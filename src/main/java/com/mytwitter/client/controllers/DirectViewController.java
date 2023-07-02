@@ -88,6 +88,10 @@ public class DirectViewController implements Initializable {
                     if (!b && direct != null) {
 
                         UserProfile directProfile = requester.getProfile(direct.getUsername());
+                        if(directProfile==null){
+                            setGraphic(new Label("BLOCKED!"));
+                            return;
+                        }
 
                         TweetCell.setProfileAvatar(avatarImageView, ProfileImage.getAvatarImage(directProfile.getAvatar()), 25);
 
@@ -133,6 +137,8 @@ public class DirectViewController implements Initializable {
 
             listCell.setOnMouseClicked(mouseEvent -> {
                 String directUsername =  listCell.getItem().getUsername();
+                if(requester.getUserAvatar(directUsername) == null)
+                    return;
                 new MessagesViewController(currentStage, directUsername);
             });
             return listCell;

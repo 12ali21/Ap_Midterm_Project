@@ -32,6 +32,13 @@ public class ProfileHandler implements HttpHandler {
 
             UserProfile userProfile = new UserProfile();
             if (segments.length == 3) {
+
+                if(databaseManager.checkBlocked(usernameToRequest, usernameToView)){
+                    exchange.sendResponseHeaders(403, 0);
+                    exchange.close();
+                    return;
+                }
+
                 User user = databaseManager.getUser(usernameToView);
                 if (user != null) {
                     ArrayList<User> followers = databaseManager.getFollowers(usernameToView);

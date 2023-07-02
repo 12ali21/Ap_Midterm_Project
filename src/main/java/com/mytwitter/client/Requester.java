@@ -152,7 +152,12 @@ public class Requester {
                     .header("authorization", jwt)
                     .build();
 
+
             HttpResponse<String> GETResponse = httpClient.send(GETRequest, HttpResponse.BodyHandlers.ofString());
+
+            if(GETResponse.statusCode() == 403)
+                return null;
+
             return ClientGson.getTimelineGson().fromJson(GETResponse.body(), UserProfile.class);
 
         } catch (URISyntaxException | IOException | InterruptedException e) {
